@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/userStore';
+import { Weather } from '@/types';
 import draggable from 'vuedraggable'
 const userStore = useUserStore()
 
-const deleteLocation = (location) => {
+const deleteLocation = (location:Weather) => {
     const index = userStore.allUserLocationWeather.findIndex(el => el.id === location.id)
     userStore.allUserLocationWeather.splice(index, 1)
 }

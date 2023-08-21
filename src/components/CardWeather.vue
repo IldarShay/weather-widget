@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import {ref} from 'vue'
+import {Ref, ref} from 'vue'
 import {useUserStore} from '../stores/userStore'
+import {Weather} from '../types/index'
 const userStore = useUserStore()
-const URL = ref('')
+const URL: Ref<string> = ref('')
 
-const temperature = temp => Math.trunc(temp - 273.15)
-const kilometres = km => (km/1000).toFixed(1)
-const descriptionWeather = description => description.charAt(0).toUpperCase() + description.slice(1, -1)
+const temperature = (temp: number) => Math.trunc(temp - 273.15)
+const kilometres = (km: number) => (km/1000).toFixed(1)
+const descriptionWeather = (description: string) => description.charAt(0).toUpperCase() + description.slice(1, -1)
 
 navigator.geolocation.getCurrentPosition((position) => {
   URL.value = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${userStore.API_key}`
@@ -20,9 +21,10 @@ navigator.geolocation.getCurrentPosition((position) => {
 
 const getCurrentUserLocationWeather = async() => {
     const response = await fetch(URL.value)
-    const data = await response.json()
+    const data: Weather = await response.json()
     userStore.currentUserLocationWeather = data
     userStore.allUserLocationWeather.push(data)
+    
 }
 </script>
 <template>
